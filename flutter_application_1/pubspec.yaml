@@ -73,11 +73,12 @@ flutter:
   assets:
     - assets/icons/heroes_icon.png
     - assets/icons/home_icon.png
+    - assets/icons/bug_icon.png
     - assets/images/background_header_image.png
     - assets/images/banner_home.png
     - assets/images/marvel_logo.png
     - assets/images/hero_placeholder.jpg
-    - assets/images/comic_placeholder.jpg
+    - assets/images/comic_placeholder.png
     - assets/loading.gif
 
 
@@ -92,17 +93,21 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+     - family: Marvel
+       fonts:
+         - asset: assets/fonts/MarvelRegular-Dj83.ttf
+
+     - family: American
+       fonts:
+         - asset: assets/fonts/American.otf
+         
+     - family: Roboto
+       fonts:
+         - asset: assets/fonts/Roboto-Black.ttf
+         - asset: assets/fonts/Roboto-Regular.ttf
+         - asset: assets/fonts/Roboto-Thin.ttf
+        
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

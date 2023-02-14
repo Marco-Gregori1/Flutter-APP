@@ -103,25 +103,24 @@ class _HeroeState extends State<HeroePage>{
         child: Column(
           children: [
             Stack(children: [
-              Container(
+              SizedBox(
               width: MediaQuery.of(context).size.width,
               height: (MediaQuery.of(context).size.width),
-              color: Colors.blue,
               child: FadeInImage(
-              placeholder: const AssetImage("assets/images/marvel_logo.png"), 
+              placeholder: const AssetImage('assets/images/comic_placeholder.png'), 
               image: NetworkImage(widget.url),
               fit: BoxFit.cover,
               fadeInDuration: const Duration(milliseconds: 600),
             ),
             ),
-            Positioned(
-              top: 300,
+            Container(
+              padding: const EdgeInsets.only(top: 300),
               
               child:Container(
               
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: const BorderRadius.only(
                 topLeft:  Radius.circular(40),
                 topRight:  Radius.circular(40)
                 )),
@@ -132,7 +131,7 @@ class _HeroeState extends State<HeroePage>{
               child: Align(
                 alignment: Alignment.center,
                 child: Text( widget.name,
-                 style: const TextStyle(
+                 style: const TextStyle( fontFamily: 'American',fontWeight: FontWeight.w500,
                   color: Colors.red,
                   fontSize: 30),
                   maxLines: 1,
@@ -148,12 +147,10 @@ class _HeroeState extends State<HeroePage>{
               padding: const EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width,
               height: 180,
-              color: Colors.white,
               child: Align(
                 alignment: Alignment.center,
-                child: widget.desc.isEmpty ? const Text('No hay descripción de personaje...') : Text(widget.desc,
-                 style: const TextStyle(
-                  color: Colors.black,
+                child: widget.desc.isEmpty ? const Text('No hay descripción de personaje...',style: TextStyle(fontFamily: 'Roboto',fontWeight: FontWeight.w400) ) : Text(widget.desc,
+                 style: const TextStyle(fontFamily: 'Roboto',fontWeight: FontWeight.w400,
                   fontSize: 17),
                   maxLines: 10,
                   
@@ -164,21 +161,32 @@ class _HeroeState extends State<HeroePage>{
               alignment: Alignment.center,
               child: const Text( "Comics",
                   overflow: TextOverflow.ellipsis,
-                  style:TextStyle(fontSize: 40),
+                  style:TextStyle(fontFamily: 'Roboto',fontWeight: FontWeight.w500,fontSize: 40),
             ),),
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 500,
-              color: Colors.white,
-              child: Visibility(
+              child: 
+                
+                Visibility(
                 visible: isLoaded,
-                replacement: const Center(child: CircularProgressIndicator(),),
-                child: CarouselSlider.builder(
+                replacement: const Center(child: CircularProgressIndicator(backgroundColor: Color.fromARGB(255, 119, 119, 119),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.red,),),),
+                child: 
+                  // ignore: prefer_is_empty
+                  (_ListadoComics?.length == 0 && isLoaded)? 
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child:  Text("No hay comics",textAlign: TextAlign.center,style:TextStyle(fontFamily: 'Roboto',fontWeight: FontWeight.w500)),
+                  ) 
+                  :
+                  CarouselSlider.builder(
                   itemCount: _ListadoComics?.length, 
                   itemBuilder: ((context, index, realIndex) {
                     final comic = '${_ListadoComics![index].thumbnail.path}.${_ListadoComics![index].thumbnail.extension}';
                     final nombre = _ListadoComics![index].title /* _ListadoComics![index].title*/;
-                    return buildImage(comic,nombre,index);
+                    
+                    return buildImage(comic,nombre,index);;
                   }), 
                   options: CarouselOptions(height: 420)),
               ),
@@ -194,7 +202,7 @@ class _HeroeState extends State<HeroePage>{
         child: FloatingActionButton(
         
         elevation: 0.0,
-        backgroundColor:Color.fromARGB(255, 199, 14, 14),
+        backgroundColor:Colors.red,
         onPressed: (){Navigator.pop(context);},
         child: const Icon(Icons.arrow_back)
           ),

@@ -34,19 +34,29 @@ class _HeroesState extends State<HeroesPage>{
 
 
   void updateList(String text){
-    (text == '')? getData(100,0,null): getData(100,0,text);
-     setState(() {
-        isLoaded = false;
-        isFiltered = true;
-      });
-     ;
+    if(text == ''){
+      getData(heroesLimit,heroesOffset,null);
+      }
+    else{
+    getData(heroesLimit + 90,heroesOffset,text);
+    setState(() {isFiltered = true;});
+    }
+    setState(() {isLoaded = true;});
+
      // _ListadoHeroes = _ListadoHeroes!.where((element) => element.name.toLowerCase().contains(text.toString())).toList();
     //});
   }
 
 
   getData(limit, offset,text) async {
-    _ListadoHeroes = await RemoteService().getHeroes(limit,offset,text);
+    if (text == '' || text == null){
+      setState(() {isFiltered = false;});
+      _ListadoHeroes = await RemoteService().getHeroes(limit,offset,null);
+      }
+    else{_ListadoHeroes = await RemoteService().getHeroes(limit,offset,text);
+      setState(() {
+        isFiltered = true;
+      });}
     if(_ListadoHeroes != null){
       // ignore: use_build_context_synchronously
       setState(() {
@@ -58,16 +68,17 @@ class _HeroesState extends State<HeroesPage>{
 // Se ejecuta cuando se abre una ventana 
  @override
   void initState() {
+    setState(() {isFiltered = false;});
     getData(heroesLimit,heroesOffset,null);
     super.initState();
     
     
-    controller.addListener(() {
-      if (controller.position.maxScrollExtent == controller.offset) {
+      controller.addListener(() {
+      if (controller.position.maxScrollExtent == controller.offset && isFiltered == false) {
         heroesLimit += 10;
         heroesOffset = 0;
-         getData(heroesLimit,heroesOffset,null)
-        ;
+         getData(heroesLimit,heroesOffset,null);
+         
       }
         if(heroesLimit > 11){ // checkea que se halla fetcheado antes de aparezca el boton de volver arriba
               showbtn = true;
@@ -81,6 +92,8 @@ class _HeroesState extends State<HeroesPage>{
               });
         }
     });
+    
+    
     
   }
 
@@ -96,6 +109,7 @@ class _HeroesState extends State<HeroesPage>{
     
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         
         centerTitle: true,
@@ -122,7 +136,8 @@ class _HeroesState extends State<HeroesPage>{
 
       body: Visibility(
           visible: isLoaded,
-          replacement: const Center(child: CircularProgressIndicator(),),
+          replacement: const Center(child: CircularProgressIndicator(  backgroundColor: Color.fromARGB(255, 119, 119, 119),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.red,),),),
           child: Column(
           children: 
             <Widget>[
@@ -159,7 +174,15 @@ class _HeroesState extends State<HeroesPage>{
           ), 
           Flexible(
           fit: FlexFit.tight,
-          child: GridView.builder(
+          child: 
+            // ignore: prefer_is_empty
+            (_ListadoHeroes?.length == 0 && isLoaded)? 
+                  const Padding(
+                    padding: EdgeInsets.only(top: 30),
+                    child:  Text("No se han encontrado superheroes...",textAlign: TextAlign.center,),
+                  ) 
+                  :
+            GridView.builder(
             controller: controller,
             padding: const EdgeInsets.fromLTRB(50, 10, 50, 10),
             physics: const BouncingScrollPhysics(),
@@ -170,7 +193,7 @@ class _HeroesState extends State<HeroesPage>{
              childAspectRatio:  (200 / 330)
              ),
             
-            itemCount: _ListadoHeroes == null ? _ListadoHeroes?.length :(_ListadoHeroes?.length)! + 1,
+            itemCount: _ListadoHeroes == null || isFiltered == true ? _ListadoHeroes?.length : (_ListadoHeroes?.length)! + 1,
             itemBuilder: (context,index){
               if (index < (_ListadoHeroes?.length)!){
                 return CardImage(
@@ -188,7 +211,6 @@ class _HeroesState extends State<HeroesPage>{
                   )));}
                 );
               }
-            
             else { 
               return Positioned(
                 width: 20,
@@ -197,7 +219,8 @@ class _HeroesState extends State<HeroesPage>{
                   padding: const EdgeInsets.fromLTRB(50, 50, 50, 50),
                   decoration: const BoxDecoration (
                   color: Colors.transparent),
-                  child: Center(child: CircularProgressIndicator()))
+                  child: const Center(child: CircularProgressIndicator(  backgroundColor: Color.fromARGB(255, 119, 119, 119),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.red,),)))
                 );}
           },
           )
@@ -213,10 +236,10 @@ class _HeroesState extends State<HeroesPage>{
         child: FloatingActionButton(
         
         elevation: 0.0,
-        backgroundColor:Color.fromARGB(255, 199, 14, 14),
+        backgroundColor:const Color.fromARGB(255, 199, 14, 14),
         onPressed: (){  controller.animateTo( //go to top of scroll
                      0,  //scroll offset to go
-                     duration: Duration(milliseconds: 500), 
+                     duration: const Duration(milliseconds: 500), 
                     //duration of scroll
                      curve:Curves.fastOutSlowIn //scroll type
                     );},

@@ -9,8 +9,7 @@ void main() async {
   await Preferences.init();
   runApp(MultiProvider(
     providers:[
-      ChangeNotifierProvider<ThemeProvider>(create: ((context) => 
-      ThemeProvider(darkmodeEnabled: Preferences.darkmode)),)
+      ChangeNotifierProvider<ThemeProvider>(create: (context) => ThemeProvider(isDarkMode: Preferences.darkmode) ),
     ],
     child: const MyApp()
 
@@ -23,30 +22,35 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Marvel App',
-      debugShowCheckedModeBanner: false,
-      theme: Provider.of<ThemeProvider>(context).currentTheme,
-      initialRoute: 'home',
-      routes: {
-        'home': (context) => const HomePage(),
-        'heroes': (context) => const HeroesPage(),
-        'heroe': (context) => const HeroePage(heroeId:0,url: '',name: '',desc: ''),
-        'feedback': (context) => const FeedbackForm()
-      },
-    );
+        return MaterialApp(
+          title: 'Marvel App',
+          debugShowCheckedModeBanner: false,
+          theme: Provider.of<ThemeProvider>(context).currentTheme,
+          initialRoute: 'home',
+          routes: {
+            'home': (context) => const HomePage(),
+            'heroes': (context) => const HeroesPage(),
+            'heroe': (context) => const HeroePage(heroeId:0,url: '',name: '',desc: ''),
+            'feedback': (context) => const FeedbackForm()
+          },
+        );
+      }
+    
   }
   
-  // IMPORTANTES (durante la semana)
-  // desarrollo formulario y POST API
-  // terminar de configurar color themes 
+  // Hacer que email y el tick se guarde en shared preferences
+  // Comitear API Y APP
+  // Documentar (Como le pega a la API ) y ver como enviar APK??
+  // Entregar
 
-  //DOMINGO  sist de busqueda => usar fetch de starts with ?? 
+  // se entrega :
+  //  -Repositorio en GitHub
+  //  -N° de API y Dimensiones con las que fue probado el prototipo a entregar.
+  //  -En caso de que hayan generado un nuevo repositorio para la API de Node.js también 
+  //   deberá ser compartido.
+  //  -APK de la aplicación.
+  //
 
-  // opcional
-  // arreglar el spinner => https://pub.dev/packages/flutter_staggered_grid_view ?
-
-  
 
   
  // LOCALHOST PARA ANDROID (celular real)
@@ -55,6 +59,6 @@ class MyApp extends StatelessWidget {
  //  LOCALHOST DENTRO PC 
  // http://127.0.0.1:8000...
 
-}
+
 
 

@@ -4,19 +4,18 @@ import 'package:flutter_application_1/themes/default_themes.dart';
 
 
 class ThemeProvider extends ChangeNotifier {
+  
   ThemeData currentTheme;
 
-  ThemeProvider({required bool darkmodeEnabled})
-      : currentTheme =
-            (darkmodeEnabled) ? DefaultThemes.lightTheme : ThemeData.light();
+  ThemeProvider({required bool isDarkMode}):currentTheme = (isDarkMode) ? ThemeData.dark() : ThemeData.light();
 
-  setDark() {
-    currentTheme = DefaultThemes.lightTheme;
+  setLight(){
+    currentTheme = ThemeData.light();
     notifyListeners();
   }
 
-  setLight() {
-    currentTheme = ThemeData.light();
+  setDark(){
+    currentTheme = ThemeData.dark();
     notifyListeners();
   }
 }

@@ -46,10 +46,10 @@ class _SideBarMenuState extends State<SideBarMenu> {
           ),
           const Divider(height: 5),
           ListTile(
-            title: const Text('Feedback',style: TextStyle(color: Colors.white)
+            title: const Text('Informar error',style: TextStyle(color: Colors.white)
             ),
             leading: const ImageIcon(
-              AssetImage("assets/icons/heroes_icon.png"),
+              AssetImage("assets/icons/bug_icon.png"),
               color: Color(0xFFFFFFFF),
             ),
             onTap: () {

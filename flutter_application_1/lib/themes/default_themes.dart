@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class DefaultThemes {
@@ -12,6 +14,7 @@ class DefaultThemes {
     static final ThemeData lightTheme = ThemeData.light().copyWith(
     scaffoldBackgroundColor: marvelDarkest,
     primaryColor: marvelRed,
+    backgroundColor: marvelWhite,
     appBarTheme: const AppBarTheme(
         backgroundColor: marvelRed, foregroundColor: marvelRed),
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -26,20 +29,18 @@ class DefaultThemes {
     listTileTheme: const ListTileThemeData(iconColor: marvelRed),
   );
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
+    //colorScheme: const ColorScheme(brightness: Brightness.dark, primary: Colors.blue, onPrimary: Colors.blue, secondary: Colors.blue, onSecondary: Colors.blue, error: Colors.blue, onError: Colors.blue, background: Colors.red, onBackground: Colors.blue, surface: Colors.blue, onSurface: Colors.blue),
+    backgroundColor: Colors.black,
     scaffoldBackgroundColor: marvelDarker,
-    primaryColor: marvelRed,
+    brightness: Brightness.dark,
+    primaryColor: Colors.black, 
+    hintColor: Colors.white,
+    //textTheme: const TextTheme(bodyText2: TextStyle(color: Colors.black),bodyText1: TextStyle(color: marvelRed)),
     appBarTheme: const AppBarTheme(
         backgroundColor: marvelDarker, foregroundColor: marvelRed),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: TextButton.styleFrom(
             backgroundColor: marvelDark, foregroundColor: Colors.white)),
-    textTheme: const TextTheme(
-      bodyText1: TextStyle(),
-      bodyText2: TextStyle(),
-    ).apply(
-      bodyColor: Colors.orange, 
-      displayColor: Colors.blue, 
-    ),
     textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
             backgroundColor: Colors.transparent,

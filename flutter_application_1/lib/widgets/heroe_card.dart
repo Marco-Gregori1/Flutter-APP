@@ -48,7 +48,7 @@ class CardImage extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10),
                   child: Text(heroeName,
                   maxLines: 1,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   ),
                 ),
                 if(captionImage != null)

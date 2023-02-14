@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../shared/preferences.dart';
 import '../widgets/side_bar_menu.dart';
 class FeedbackForm extends StatefulWidget {
   const FeedbackForm({super.key});
@@ -10,9 +10,25 @@ class FeedbackForm extends StatefulWidget {
 
 class _FeedbackFormState extends State<FeedbackForm> {
 
+
+@override
+  void initState() {
+    getSavedData();
+    super.initState();
+  }
+
+void getSavedData() async{
+   _isChecked = Preferences.isChecked;
+   textController.text = Preferences.email;
+
+}
+
+
 final _formKey = GlobalKey<FormState>();
 var selectedPage = 'Seleccione una pagina';
 bool? _isChecked = false; 
+var _savedEmail = '';
+TextEditingController textController = TextEditingController();
 
 final _paginas = [  
   'Seleccione una pagina',  
@@ -55,15 +71,17 @@ final _paginas = [
           borderRadius: BorderRadius.circular(10),
           color: const Color.fromARGB(176, 176, 176, 176),
           ),
-      height: 600,
+      height: 650,
       width: 350,
       child: Column(
         // ignore: prefer_const_literals_to_create_immutables
         children:<Widget> [
           const SizedBox(height: 15,),
-          const Text("Coméntanos que ha pasado"),
-          const SizedBox(height: 15,),
-          const Text("¿En que pagina de la app?"),
+          const Text("Coméntanos que ha pasado",textAlign: TextAlign.left,
+          style: TextStyle( fontFamily: 'Roboto',fontWeight: FontWeight.bold,fontSize: 18)),
+          const SizedBox(height: 20,),
+          const Text("¿En que pagina ocurrió?",textAlign: TextAlign.left,
+          style: TextStyle( fontFamily: 'Roboto',fontWeight: FontWeight.bold,fontSize: 15)),
            const Padding(padding: EdgeInsets.all(10)),
           Container(
             padding: const EdgeInsets.only(left: 9,top: 5, bottom: 6, right: 20),
@@ -89,7 +107,7 @@ final _paginas = [
                   value: items,
                   enabled: items != 'Seleccione una pagina',
                   child: Text(items, style: TextStyle(fontFamily: 'DMSans', color: items != 'Seleccione una pagina'
-                  ? Color.fromARGB(255, 252, 38, 0) : Colors.black,)),
+                  ? const Color.fromRGBO(254,23,31,1) : Colors.black,)),
                 );
               }).toList(),
               onChanged: (String? newValue) {
@@ -98,10 +116,12 @@ final _paginas = [
                 });
               },
             )),
-
+          
           const SizedBox(height: 25,),
-          const Text("¿Qué ha pasado?"),
+          const Text("¿Qué ha pasado?",textAlign: TextAlign.left,
+          style: TextStyle( fontFamily: 'Roboto',fontWeight: FontWeight.bold,fontSize: 15)),
           const SizedBox(height: 15,),
+          //
           //
           Container (
               decoration: BoxDecoration(color:Colors.white,
@@ -130,12 +150,42 @@ final _paginas = [
                   textInputAction: TextInputAction.send,
                   decoration: InputDecoration.collapsed(hintText: 'Describe el problema en detalle', hintStyle: TextStyle(fontFamily: 'DMSans',fontSize: 16, fontWeight: FontWeight.w400,color: Colors.black ))
                   ),),
-
-          //
-         
+          const SizedBox(height: 25,),
+            const Text("Escribe tu correo electronico",textAlign: TextAlign.left,
+          style: TextStyle( fontFamily: 'Roboto',fontWeight: FontWeight.bold,fontSize: 15)),
+          const SizedBox(height: 25,),
+          Container (
+              decoration: BoxDecoration(color:Colors.white,
+              borderRadius: const BorderRadius.only( topLeft: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+              topRight: Radius.circular(10),
+              ),
+              border: Border.all(
+                color: const Color.fromARGB(255, 217, 219, 209),
+                width: 3
+                )
+                ),
+                width: 300,
+                height: 35,
+                padding: const EdgeInsets.only(top: 5,left: 10),
+                child:  TextField(
+                  controller: textController,
+                  autofocus: false,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  textCapitalization: TextCapitalization.sentences,
+                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
+                  cursorColor: Colors.black,
+                  cursorRadius: const Radius.circular(200),
+                  cursorWidth: 2.0,
+                  textInputAction: TextInputAction.send,
+                  decoration: const InputDecoration.collapsed(hintText: 'Email', hintStyle: TextStyle(fontFamily: 'DMSans',fontSize: 16, fontWeight: FontWeight.w400,color: Colors.black ))
+                  ),),
           const SizedBox(height: 15,),
+         
           Container(
-                  child: (CheckboxListTile(value: _isChecked , activeColor: Color.fromRGBO(236, 2, 2, 1), title: Text('Desea recibir notifaciones sobre noticias de la app?', style: TextStyle(fontFamily: 'DMSans')), onChanged:(value) {
+                  child: (CheckboxListTile(value: _isChecked , activeColor: const Color.fromRGBO(254,23,31,1), title: const Text('Desea recibir notifaciones sobre noticias de la app?', style: TextStyle(fontFamily: 'Roboto')), onChanged:(value) {
                 setState(() {
                   _isChecked = value;
                 });
@@ -143,7 +193,7 @@ final _paginas = [
               },
               controlAffinity: ListTileControlAffinity.leading,)),
               ),
-           const SizedBox(height: 44),
+           const SizedBox(height: 15),
           Form(
                 key: _formKey,
                 child: 
@@ -151,27 +201,33 @@ final _paginas = [
                     children: <Widget>[
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(370, 40),
+                          minimumSize: const Size(300, 40),
                           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(
                             topRight: Radius.circular(13),
                             bottomRight: Radius.circular(13),
                             bottomLeft: Radius.circular(13),
                             topLeft: Radius.circular(13)
                             )),
-                            backgroundColor: const Color.fromRGBO(174, 145, 75, 1) ,
+                            backgroundColor: const Color.fromRGBO(254,23,31,1),
                             ),
                             onPressed: () {
-                              // Validate returns true if the form is valid, or false otherwise.
                               if (_formKey.currentState!.validate()) {
-                                // If the form is valid, display a snackbar. In the real world,
-                                // you'd often call a server or save the information in a database.
+                                
+                                setState(() {
+                                  Preferences.email = textController.text;
+                                  Preferences.isChecked = _isChecked!;
+                                });
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
+                                      backgroundColor: Colors.red,
                                       content: Text('Enviando Mensaje')),
                                 );
                               }
                             },
-                            child: const Text('Enviar Mensaje', style: TextStyle(fontFamily: 'DMSans',fontSize: 16,fontWeight: FontWeight.w700, color: Color.fromARGB(255, 217, 219, 209)),),
+                            child: const Text('Enviar Mensaje', 
+                            style: TextStyle(fontFamily: 
+                            'Roboto',fontSize: 16,fontWeight: FontWeight.w700, 
+                            color: Color.fromARGB(255, 217, 219, 209)),),
                           ),
                         ]
                         )
