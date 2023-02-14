@@ -1,4 +1,6 @@
-# Desarrollada en un Pixel 5 Api 33 (android-x64 emulator) de resolucion: 1080 x 2340
+# APP MARVEL FLUTTER (Marco Gregori)
+
+Desarrollada en un Pixel 5 Api 33 (android-x64 emulator) de resolucion: 1080 x 2340
 
 
 Esta APP requiere su API de marvel levantada para funcionar debidamente,
